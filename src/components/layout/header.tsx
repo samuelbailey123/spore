@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MapPin, Navigation } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useLocation } from "@/context/location-context";
+import { LocationPicker } from "@/components/location/location-picker";
 
 const navItems = [
   { href: "/", label: "Dashboard" },
@@ -16,7 +15,6 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname();
-  const { name, requestGeolocation, loading } = useLocation();
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-950/80">
@@ -54,18 +52,7 @@ export function Header() {
           </nav>
         </div>
 
-        <button
-          onClick={requestGeolocation}
-          disabled={loading}
-          className="flex items-center gap-1.5 rounded-md border border-zinc-200 px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-100"
-        >
-          {loading ? (
-            <Navigation className="h-3.5 w-3.5 animate-pulse" />
-          ) : (
-            <MapPin className="h-3.5 w-3.5" />
-          )}
-          <span className="max-w-[150px] truncate">{name}</span>
-        </button>
+        <LocationPicker />
       </div>
 
       {/* Mobile nav */}
