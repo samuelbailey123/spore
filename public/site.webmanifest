@@ -1,0 +1,15 @@
+{
+  "name": "Spore — Pollen Intelligence",
+  "short_name": "Spore",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#052e16",
+  "theme_color": "#052e16",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
