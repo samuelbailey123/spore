@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   description:
     "Detailed pollen counts, species breakdowns, forecasts, and educational resources for allergy sufferers. Know exactly what's in the air.",
   metadataBase: new URL("https://spore.decimahosted.com"),
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
     title: "Spore — Pollen Intelligence Dashboard",
     description:
@@ -30,6 +34,9 @@ export const metadata: Metadata = {
     url: "https://spore.decimahosted.com",
     siteName: "Spore",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
@@ -40,6 +47,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="theme-color" content="#052e16" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
