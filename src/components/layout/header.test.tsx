@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Header } from "./header";
 import * as locationContext from "@/context/location-context";
 
@@ -51,20 +51,9 @@ describe("Header", () => {
     expect(screen.getByText("Houston, TX")).toBeInTheDocument();
   });
 
-  it("renders the location button", () => {
+  it("renders the location picker button", () => {
     render(<Header />);
     expect(screen.getByRole("button")).toBeInTheDocument();
-  });
-
-  it("calls requestGeolocation when button is clicked", () => {
-    const requestGeolocation = vi.fn();
-    vi.mocked(locationContext.useLocation).mockReturnValue({
-      ...defaultLocationValue,
-      requestGeolocation,
-    });
-    render(<Header />);
-    fireEvent.click(screen.getByRole("button"));
-    expect(requestGeolocation).toHaveBeenCalled();
   });
 
   it("button is not disabled when not loading", () => {
