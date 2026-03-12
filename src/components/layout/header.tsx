@@ -8,6 +8,8 @@ import { LocationPicker } from "@/components/location/location-picker";
 const navItems = [
   { href: "/", label: "Dashboard" },
   { href: "/forecast", label: "Forecast" },
+  { href: "/my-forecast", label: "My Forecast" },
+  { href: "/my-allergens", label: "My Allergens" },
   { href: "/learn", label: "Learn" },
   { href: "/species", label: "Species" },
   { href: "/trends", label: "Trends" },
