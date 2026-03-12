@@ -98,8 +98,133 @@ describe("mergeForecastData", () => {
     expect(result).toHaveLength(0);
   });
 
+  it("groups and averages same-date Ambee entries", () => {
+    const ambeeForecasts: AmbeeNormalized[] = [
+      { ...mockAmbeeData, treePollen: 100, timestamp: "2026-03-11T08:00:00Z" },
+      { ...mockAmbeeData, treePollen: 200, timestamp: "2026-03-11T16:00:00Z" },
+    ];
+    const result = mergeForecastData(null, ambeeForecasts);
+    expect(result).toHaveLength(1);
+    expect(result[0].date).toBe("2026-03-11");
+    // Average of 100 and 200 = 150, scaled to UPI
+    const treeIndex = result[0].indices.find(i => i.category === "tree");
+    expect(treeIndex).toBeDefined();
+  });
+
   it("includes species data from Google forecast", () => {
     const result = mergeForecastData(mockGoogleData, null);
     expect(result[0].species).toHaveLength(2);
+  });
+});
+
+describe("mergeForecastData edge cases", () => {
+  it("handles Ambee entries with same-date grouping preserving risk from last entry", () => {
+    const entries: AmbeeNormalized[] = [
+      {
+        treePollen: 100,
+        grassPollen: 0,
+        weedPollen: 0,
+        treeRisk: "low",
+        grassRisk: "none",
+        weedRisk: "none",
+        species: [],
+        timestamp: "2026-03-11T08:00:00Z",
+      },
+      {
+        treePollen: 300,
+        grassPollen: 20,
+        weedPollen: 0,
+        treeRisk: "high",
+        grassRisk: "moderate",
+        weedRisk: "none",
+        species: [],
+        timestamp: "2026-03-11T16:00:00Z",
+      },
+    ];
+    const result = mergeForecastData(null, entries);
+    expect(result).toHaveLength(1);
+    // Average tree: (100+300)/2=200, average grass: (0+20)/2=10
+    // Risk from last entry
+    const treeIdx = result[0].indices.find(i => i.category === "tree")!;
+    expect(treeIdx.risk).toBe("high");
+  });
+});
+
+describe("scaleGrainToUPI (via buildIndicesFromAmbee)", () => {
+  it("maps count >= 1000 to UPI value 5", () => {
+    const highCountAmbee: AmbeeNormalized = {
+      treePollen: 1500,
+      grassPollen: 1000,
+      weedPollen: 2000,
+      treeRisk: "very_high",
+      grassRisk: "very_high",
+      weedRisk: "very_high",
+      species: [],
+      timestamp: "2026-03-11T10:00:00Z",
+    };
+    const result = mergeCurrentData(null, highCountAmbee, mockLocation);
+    expect(result.indices[0].value).toBe(5);
+    expect(result.indices[1].value).toBe(5);
+    expect(result.indices[2].value).toBe(5);
+  });
+
+  it("maps count 0 to UPI value 0", () => {
+    const zeroAmbee: AmbeeNormalized = {
+      treePollen: 0,
+      grassPollen: 0,
+      weedPollen: 0,
+      treeRisk: "none",
+      grassRisk: "none",
+      weedRisk: "none",
+      species: [],
+      timestamp: "2026-03-11T10:00:00Z",
+    };
+    const result = mergeCurrentData(null, zeroAmbee, mockLocation);
+    expect(result.indices[0].value).toBe(0);
+  });
+
+  it("maps count 5 to UPI value 1", () => {
+    const lowAmbee: AmbeeNormalized = {
+      treePollen: 5,
+      grassPollen: 0,
+      weedPollen: 0,
+      treeRisk: "low",
+      grassRisk: "none",
+      weedRisk: "none",
+      species: [],
+      timestamp: "2026-03-11T10:00:00Z",
+    };
+    const result = mergeCurrentData(null, lowAmbee, mockLocation);
+    expect(result.indices[0].value).toBe(1);
+  });
+
+  it("maps count 49 to UPI value 2", () => {
+    const modAmbee: AmbeeNormalized = {
+      treePollen: 49,
+      grassPollen: 0,
+      weedPollen: 0,
+      treeRisk: "moderate",
+      grassRisk: "none",
+      weedRisk: "none",
+      species: [],
+      timestamp: "2026-03-11T10:00:00Z",
+    };
+    const result = mergeCurrentData(null, modAmbee, mockLocation);
+    expect(result.indices[0].value).toBe(2);
+  });
+
+  it("maps count 199 to UPI value 3", () => {
+    const highAmbee: AmbeeNormalized = {
+      treePollen: 199,
+      grassPollen: 0,
+      weedPollen: 0,
+      treeRisk: "high",
+      grassRisk: "none",
+      weedRisk: "none",
+      species: [],
+      timestamp: "2026-03-11T10:00:00Z",
+    };
+    const result = mergeCurrentData(null, highAmbee, mockLocation);
+    expect(result.indices[0].value).toBe(3);
   });
 });

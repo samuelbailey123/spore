@@ -3,7 +3,14 @@
 import useSWR from "swr";
 import type { PollenSnapshot, ApiResponse } from "@/types/pollen";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? `Request failed with status ${res.status}`);
+  }
+  return res.json();
+};
 
 export function usePollen(lat: number | null, lng: number | null, name?: string) {
   const key =
