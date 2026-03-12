@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#052e16"/>
+  <!-- Pollen grain outer shell -->
+  <circle cx="16" cy="16" r="9" fill="none" stroke="#22c55e" stroke-width="0.8" opacity="0.4"/>
+  <circle cx="16" cy="16" r="11" fill="none" stroke="#22c55e" stroke-width="0.5" opacity="0.2" stroke-dasharray="2 3"/>
+  <!-- Spore body -->
+  <circle cx="16" cy="16" r="6.5" fill="#166534"/>
+  <circle cx="16" cy="16" r="5" fill="#15803d"/>
+  <!-- Pollen surface texture (apertures) -->
+  <circle cx="13" cy="14" r="1.5" fill="#22c55e" opacity="0.6"/>
+  <circle cx="19" cy="14" r="1.5" fill="#22c55e" opacity="0.6"/>
+  <circle cx="16" cy="19" r="1.5" fill="#22c55e" opacity="0.6"/>
+  <!-- Center highlight -->
+  <circle cx="16" cy="16" r="2" fill="#4ade80" opacity="0.3"/>
+  <!-- Floating pollen particles -->
+  <circle cx="6" cy="8" r="1" fill="#86efac" opacity="0.5"/>
+  <circle cx="26" cy="10" r="0.8" fill="#86efac" opacity="0.4"/>
+  <circle cx="25" cy="24" r="1" fill="#86efac" opacity="0.5"/>
+  <circle cx="7" cy="25" r="0.7" fill="#86efac" opacity="0.3"/>
+</svg>
