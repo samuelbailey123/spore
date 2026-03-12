@@ -1,6 +1,14 @@
 {
   "name": "spore",
   "version": "0.1.0",
+  "description": "Pollen intelligence dashboard with real-time data, forecasts, species breakdowns, and health recommendations.",
+  "license": "MIT",
+  "author": "Samuel Bailey",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/samuelbailey123/spore.git"
+  },
+  "keywords": ["pollen", "allergy", "dashboard", "nextjs", "health"],
   "private": true,
   "scripts": {
     "dev": "next dev",
