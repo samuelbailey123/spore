@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   description:
     "Detailed pollen counts, species breakdowns, forecasts, and educational resources for allergy sufferers. Know exactly what's in the air.",
-  metadataBase: new URL("https://spore.decimahosted.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://spore.decimahosted.com"),
   manifest: "/site.webmanifest",
   icons: {
     icon: "/favicon.svg",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title: "Spore — Pollen Intelligence Dashboard",
     description:
       "Detailed pollen counts, species breakdowns, forecasts, and educational resources for allergy sufferers.",
-    url: "https://spore.decimahosted.com",
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://spore.decimahosted.com",
     siteName: "Spore",
     type: "website",
   },
