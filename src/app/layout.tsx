@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { LocationProvider } from "@/context/location-context";
+import { AllergenProvider } from "@/context/allergen-context";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import "./globals.css";
@@ -54,11 +55,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
         <LocationProvider>
-          <Header />
-          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
-            {children}
-          </main>
-          <Footer />
+          <AllergenProvider>
+            <Header />
+            <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
+              {children}
+            </main>
+            <Footer />
+          </AllergenProvider>
         </LocationProvider>
       </body>
     </html>
