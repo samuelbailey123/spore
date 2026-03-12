@@ -164,7 +164,7 @@ describe("GET /api/pollen/history", () => {
       expect(body.source).toBe("ambee");
     });
 
-    it("passes parsed coordinates and date strings to fetchAmbeeHistory", async () => {
+    it("passes parsed coordinates and datetime strings to fetchAmbeeHistory", async () => {
       mockFetchAmbeeHistory.mockResolvedValueOnce(MOCK_HISTORY);
 
       const req = makeRequest(VALID_PARAMS);
@@ -173,8 +173,8 @@ describe("GET /api/pollen/history", () => {
       expect(mockFetchAmbeeHistory).toHaveBeenCalledWith(
         29.76,
         -95.37,
-        "2026-03-10",
-        "2026-03-11"
+        "2026-03-10 00:00:00",
+        "2026-03-11 23:59:59"
       );
     });
 
@@ -193,17 +193,51 @@ describe("GET /api/pollen/history", () => {
   // ---- API failure ---------------------------------------------------------
 
   describe("when Ambee API fails", () => {
-    it("returns 502 when fetchAmbeeHistory returns null", async () => {
+    it("returns 200 with empty data when fetchAmbeeHistory returns null", async () => {
       mockFetchAmbeeHistory.mockResolvedValueOnce(null);
 
       const req = makeRequest(VALID_PARAMS);
       const res = await GET(req);
 
-      expect(res.status).toBe(502);
+      expect(res.status).toBe(200);
       const body = await res.json();
-      expect(body.error).toBe("Unable to fetch historical data");
-      expect(body.data).toBeNull();
+      expect(body.error).toBeNull();
+      expect(body.data).toEqual([]);
       expect(body.source).toBe("ambee");
+    });
+  });
+
+  describe("date formatting", () => {
+    it("appends time components to bare date strings", async () => {
+      mockFetchAmbeeHistory.mockResolvedValueOnce(MOCK_HISTORY);
+
+      const req = makeRequest(VALID_PARAMS);
+      await GET(req);
+
+      expect(mockFetchAmbeeHistory).toHaveBeenCalledWith(
+        29.76,
+        -95.37,
+        "2026-03-10 00:00:00",
+        "2026-03-11 23:59:59"
+      );
+    });
+
+    it("preserves date strings that already include time", async () => {
+      mockFetchAmbeeHistory.mockResolvedValueOnce(MOCK_HISTORY);
+
+      const req = makeRequest({
+        ...VALID_PARAMS,
+        from: "2026-03-10 06:00:00",
+        to: "2026-03-11 18:00:00",
+      });
+      await GET(req);
+
+      expect(mockFetchAmbeeHistory).toHaveBeenCalledWith(
+        29.76,
+        -95.37,
+        "2026-03-10 06:00:00",
+        "2026-03-11 18:00:00"
+      );
     });
   });
 

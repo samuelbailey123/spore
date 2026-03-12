@@ -32,12 +32,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ data: cached, error: null, source: "cache" });
   }
 
-  const history = await fetchAmbeeHistory(lat, lng, from, to);
+  const fromDateTime = from.includes(" ") ? from : `${from} 00:00:00`;
+  const toDateTime = to.includes(" ") ? to : `${to} 23:59:59`;
+
+  const history = await fetchAmbeeHistory(lat, lng, fromDateTime, toDateTime);
 
   if (!history) {
     return NextResponse.json(
-      { data: null, error: "Unable to fetch historical data", source: "ambee" },
-      { status: 502 }
+      { data: [], error: null, source: "ambee" }
     );
   }
 

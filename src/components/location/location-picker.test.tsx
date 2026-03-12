@@ -541,6 +541,67 @@ describe("LocationPicker", () => {
     expect(stored).toHaveLength(1);
   });
 
+  it("shows fallback error when API returns no error message", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ data: [], error: null }),
+    });
+
+    render(<LocationPicker />);
+    fireEvent.click(screen.getByRole("button", { expanded: false }));
+
+    const input = screen.getByPlaceholderText(/search address/i);
+    fireEvent.change(input, { target: { value: "test query" } });
+
+    act(() => {
+      vi.advanceTimersByTime(350);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText("Search failed")).toBeInTheDocument();
+    });
+  });
+
+  it("ignores non-Escape keydown events", () => {
+    render(<LocationPicker />);
+    fireEvent.click(screen.getByRole("button", { expanded: false }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: "Enter" });
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("ignores mousedown inside the container", () => {
+    render(<LocationPicker />);
+    fireEvent.click(screen.getByRole("button", { expanded: false }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    fireEvent.mouseDown(screen.getByRole("dialog"));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("selects a recent location when clicked", () => {
+    const setLocation = vi.fn();
+    vi.mocked(locationContext.useLocation).mockReturnValue({
+      ...defaultLocationValue,
+      setLocation,
+    });
+
+    localStorageMock.setItem(
+      "spore-recent-locations",
+      JSON.stringify([{ lat: 40.71, lng: -74.01, name: "New York, NY" }])
+    );
+
+    render(<LocationPicker />);
+    fireEvent.click(screen.getByRole("button", { expanded: false }));
+
+    expect(screen.getByText("Recent")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("New York, NY"));
+
+    expect(setLocation).toHaveBeenCalledWith(40.71, -74.01, "New York, NY");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
   it("toggles dropdown open and closed", () => {
     render(<LocationPicker />);
     const button = screen.getByRole("button", { expanded: false });
