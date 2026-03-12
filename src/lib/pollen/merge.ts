@@ -1,7 +1,6 @@
 import type { PollenSnapshot, DailyForecast, PollenIndex, SpeciesCount } from "@/types/pollen";
 import type { GoogleNormalized } from "@/lib/api/google-pollen";
 import type { AmbeeNormalized } from "@/lib/api/ambee-pollen";
-import { upiToRisk } from "./thresholds";
 
 /**
  * Merges Google and Ambee data into a unified PollenSnapshot.
