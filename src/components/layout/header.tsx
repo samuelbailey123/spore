@@ -23,9 +23,16 @@ export function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 text-white">
-              <span className="text-sm font-bold">S</span>
-            </div>
+            <svg viewBox="0 0 32 32" className="h-8 w-8" aria-hidden="true">
+              <rect width="32" height="32" rx="6" fill="#052e16" />
+              <circle cx="16" cy="16" r="9" fill="none" stroke="#22c55e" strokeWidth="0.8" opacity="0.4" />
+              <circle cx="16" cy="16" r="6.5" fill="#166534" />
+              <circle cx="16" cy="16" r="5" fill="#15803d" />
+              <circle cx="13" cy="14" r="1.5" fill="#22c55e" opacity="0.6" />
+              <circle cx="19" cy="14" r="1.5" fill="#22c55e" opacity="0.6" />
+              <circle cx="16" cy="19" r="1.5" fill="#22c55e" opacity="0.6" />
+              <circle cx="16" cy="16" r="2" fill="#4ade80" opacity="0.3" />
+            </svg>
             <span className="text-lg font-semibold tracking-tight">Spore</span>
           </Link>
 
