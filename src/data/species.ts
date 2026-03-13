@@ -224,6 +224,32 @@ export const species: SpeciesProfile[] = [
     ],
   },
   {
+    slug: "pecan",
+    name: "Pecan",
+    scientificName: "Carya illinoinensis",
+    category: "tree",
+    description:
+      "Pecan trees are prolific pollen producers native to the southern United States and Mexico. A single pecan tree can release vast quantities of wind-dispersed pollen from its male catkins, which dangle in clusters up to 15 cm long. Pecan pollen is a significant cause of spring allergies in the Gulf Coast states and Texas, where pecan orchards and landscape trees are extremely common. The pollen grains are moderately sized and highly allergenic, containing proteins that cross-react with other members of the Juglandaceae (walnut) family.",
+    allergySeverity: "moderate",
+    bloomPeriod: { start: 3, end: 5 },
+    peakMonths: [4, 5],
+    crossReactivity: [
+      "Walnut (same family Juglandaceae — strong cross-reactivity)",
+      "Hickory (same genus Carya)",
+      "Birch (limited Bet v 1-like cross-reactivity)",
+      "Other tree nuts (cashew, pistachio — oral allergy syndrome in some individuals)",
+    ],
+    prevalence:
+      "Very common in Texas, the Gulf Coast states, and the southeastern United States. Texas alone has over 70 million pecan trees. Widely planted as both orchard and ornamental trees.",
+    grainSize: "30-50 micrometres",
+    tips: [
+      "Pecan pollen peaks in April-May in most southern regions — time outdoor activities for late afternoon when counts drop.",
+      "Pecan and walnut pollen cross-react strongly. If you're allergic to one, get tested for the other.",
+      "Pecan orchards produce extremely high local pollen concentrations — avoid being downwind during bloom season.",
+      "Pecan pollen allergy is distinct from pecan nut allergy, though some individuals have both. Consult an allergist if unsure.",
+    ],
+  },
+  {
     slug: "ragweed",
     name: "Ragweed",
     scientificName: "Ambrosia",
